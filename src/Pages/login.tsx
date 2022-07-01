@@ -11,7 +11,11 @@ function Login() {
       <div className="bg-[#697BFF] w-[55%] lg:w-[50%] md:hidden">
         <div className="flex items-center justify-center mt-16">
           {' '}
-          <img className="xl:w-[250px] lg:w-[200px]" src={review} alt="review" />
+          <img
+            className="xl:w-[250px] lg:w-[200px]"
+            src={review}
+            alt="review"
+          />
           <img className="lg:w-[200px]" src={secorder} alt="order preview" />{' '}
         </div>
         <img

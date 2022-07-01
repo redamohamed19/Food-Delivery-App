@@ -1,5 +1,5 @@
-import React,{useState} from 'react';
-import Globalcontext  from '../Context/StepperContext';
+import React, { useState } from 'react';
+import Globalcontext from '../Context/StepperContext';
 import review from '../imgs/ads/reviews.png';
 import order from '../imgs/ads/order.png';
 import secorder from '../imgs/ads/secorder.png';
@@ -12,42 +12,51 @@ import AccontCreated from '../component/signin_steps/AccontCreated';
 
 function Sign_Up() {
   const [currentStep, setCurrentStep] = useState(1);
-  
-  const[GoNext,SetGoNext]=useState(true)
-  const [Status, Setstatus] = useState({ FirstName: '', SecondName: '',Email: '', PhoneNumber: '',Password: ''})
-  const FinalStatus={...Status,Setstatus:Setstatus}
+
+  const [GoNext, SetGoNext] = useState(true);
+  const [Status, Setstatus] = useState({
+    FirstName: '',
+    SecondName: '',
+    Email: '',
+    PhoneNumber: '',
+    Password: '',
+  });
+  const FinalStatus = { ...Status, Setstatus: Setstatus };
   const steps = [
-    "Account Information",
-    "Password Entry",
-    "Phone Verification",
-    "Complete",
+    'Account Information',
+    'Password Entry',
+    'Phone Verification',
+    'Complete',
   ];
-  const displayStep = (step:Number) => {
+  const displayStep = (step: Number) => {
     switch (step) {
       case 1:
-        return <Phonenumber/>;
+        return <Phonenumber />;
       case 2:
-        return <PasswordEntry GoNext={GoNext}  SetGoNext={SetGoNext}  />;
-        case 3:
-          return  <EmailVerification/>;
-          case 4:
-            return  <AccontCreated/>;
+        return <PasswordEntry GoNext={GoNext} SetGoNext={SetGoNext} />;
+      case 3:
+        return <EmailVerification />;
+      case 4:
+        return <AccontCreated />;
 
       default:
     }
   };
-  const handleClick=(direction:any)=>{
-    let NewStep=currentStep;
-    direction==="next"? NewStep++:NewStep--;
-    NewStep>0 && NewStep<=steps.length && setCurrentStep(NewStep)
-  }
+  const handleClick = (direction: any) => {
+    let NewStep = currentStep;
+    direction === 'next' ? NewStep++ : NewStep--;
+    NewStep > 0 && NewStep <= steps.length && setCurrentStep(NewStep);
+  };
   return (
     <div className="flex h-[100vh]">
-   
       <div className="bg-[#697BFF] w-[55%] lg:w-[50%] md:hidden">
         <div className="flex items-center justify-center mt-16">
           {' '}
-          <img className="xl:w-[250px] lg:w-[200px]" src={review} alt="review" />
+          <img
+            className="xl:w-[250px] lg:w-[200px]"
+            src={review}
+            alt="review"
+          />
           <img className="lg:w-[200px]" src={secorder} alt="order preview" />{' '}
         </div>
         <img
@@ -69,23 +78,24 @@ function Sign_Up() {
           <span className="h-[15px] w-[15px] bg-[#fff] rounded-[50%] opacity-70"></span>
         </div>
       </div>
-      <div className='bg-white  w-1/2'>
-      <div className='my-24 shadow-xl rounded-2xl  mx-auto w-4/5 pb-6'>
-      <Globalcontext.Provider value={{Status,Setstatus}}>
-        <div className="">
-         
-        <Stepper steps={steps}  currentStep={currentStep} />
-       
-          {displayStep(currentStep)}
-         
-    
-        </div>
+      <div className="bg-white  w-1/2">
+        <div className="my-24 shadow-xl rounded-2xl  mx-auto w-4/5 pb-6">
+          <Globalcontext.Provider value={{ Status, Setstatus }}>
+            <div className="">
+              <Stepper steps={steps} currentStep={currentStep} />
 
-     
-        <Steppercontrolers handleClick={handleClick} steps={steps}  currentStep={currentStep} GoNext={GoNext}  /> 
-        </Globalcontext.Provider>
+              {displayStep(currentStep)}
+            </div>
+
+            <Steppercontrolers
+              handleClick={handleClick}
+              steps={steps}
+              currentStep={currentStep}
+              GoNext={GoNext}
+            />
+          </Globalcontext.Provider>
+        </div>
       </div>
-    </div>
     </div>
   );
 }
