@@ -4,17 +4,21 @@ const Model = require('../models/model');
 const router = express.Router()
 
 module.exports = router;
+const bcrypt=require("bcrypt")
 
 //Post Method
 
 router.post('/post', async (req, res) => {
+    const hash = bcrypt.hashSync(req.body, 10);
+  
     const data = new Model({
         FirstName: req.body.FirstName,
         SecondName: req.body.SecondName,
         Email: req.body.Email,
         PhoneNumber: req.body.PhoneNumber,
-        Password: req.body.Password
+        Password: hash
     })
+    setTimeout(() => console.log(data), 1000);
 
     try {
         const dataToSave = await data.save();
