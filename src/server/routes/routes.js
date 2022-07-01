@@ -9,7 +9,7 @@ const bcrypt=require("bcrypt")
 //Post Method
 
 router.post('/post', async (req, res) => {
-    const hash = bcrypt.hashSync(req.body, 10);
+    const hash = bcrypt.hashSync(req.body.Password, 10);
   
     const data = new Model({
         FirstName: req.body.FirstName,
@@ -18,7 +18,7 @@ router.post('/post', async (req, res) => {
         PhoneNumber: req.body.PhoneNumber,
         Password: hash
     })
-    setTimeout(() => console.log(data), 1000);
+
 
     try {
         const dataToSave = await data.save();
@@ -31,26 +31,24 @@ router.post('/post', async (req, res) => {
 
 
 //Get all Method
-router.get('/getAll', async (req, res) => {
+router.get('/getuser', async (req, res) => {
+
+
     try{
-        const data = await Model.find();
-        res.json(data)
+        const user=await Model.findOne({Email:req.body.Email}).exec();
+        if(!user){ 
+            res.json({response:"Email or Password Incorrect"})
+        }
+        bcrypt.compare(req.body.Password,user.Password).then((match)=>{
+            console.log(match)
+            if(!match){
+                res.status(400).json({response:"Email or Password Incorrect"})
+            }
+            res.json("Logged In")
+        })
+       
     }
     catch(error){
         res.status(500).json({message: error.message})
     }
-})
-//Get by ID Method
-router.get('/getOne/:id', (req, res) => {
-    res.send(req.params.id)
-})  
-
-//Update by ID Method
-router.patch('/update/:id', (req, res) => {
-    res.send('Update by ID API')
-})
-
-//Delete by ID Method
-router.delete('/delete/:id', (req, res) => {
-    res.send('Delete by ID API')
 })

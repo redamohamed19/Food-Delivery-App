@@ -1,6 +1,6 @@
 import React from 'react';
 import Login from './Pages/login';
-import Home from './Pages/home'; 
+import Home from './Pages/home';
 
 import Settings from './Pages/Settings';
 import './App.css';
@@ -11,7 +11,7 @@ import Marketing from './Pages/Marketing';
 function App() {
   return (
     <div>
-     <Marketing/>
+      <Sign_Up />
     </div>
   );
 }
