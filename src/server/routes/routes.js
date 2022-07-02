@@ -1,8 +1,7 @@
 const express = require('express');
 const Model = require('../models/model');
 const bcrypt = require('bcrypt');
-const {createTokens}=require("../JWT")
-
+const { createTokens, validateTokens } = require('../JWT');
 
 const router = express.Router();
 
@@ -41,13 +40,17 @@ router.get('/getuser', async (req, res) => {
       if (!match) {
         res.status(400).json({ response: 'Email or Password Incorrect' });
       }
-      const accessToken=createTokens(user)
-      res.cookie("access-token",accessToken,{
-        maxAge:60*60*24*30*1000
-      })
+      const accessToken = createTokens(user);
+      res.cookie('access-token', accessToken, {
+        maxAge: 60 * 60 * 24 * 30 * 1000,
+        httpOnly: true,
+      });
       res.json('Logged In');
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+});
+router.get('/profile', validateTokens, (req, res) => {
+  res.json('get acccess to profile');
 });
