@@ -2,6 +2,7 @@ const express = require('express');
 const Model = require('../models/model');
 const bcrypt = require('bcrypt');
 const { createTokens, validateTokens } = require('../JWT');
+const { check, validationResult } = require('express-validator');
 
 const router = express.Router();
 
@@ -9,24 +10,32 @@ module.exports = router;
 
 //Post Method
 
-router.post('/post', async (req, res) => {
-  const hash = bcrypt.hashSync(req.body.Password, 10);
+router.post(
+  '/post',
+  [check('Email').isEmail(), check('Password').isLength({ min: 6 })],
+  async (req, res) => {
+    const hash = bcrypt.hashSync(req.body.Password, 10);
 
-  const data = new Model({
-    FirstName: req.body.FirstName,
-    SecondName: req.body.SecondName,
-    Email: req.body.Email,
-    PhoneNumber: req.body.PhoneNumber,
-    Password: hash,
-  });
+    const data = new Model({
+      FirstName: req.body.FirstName,
+      SecondName: req.body.SecondName,
+      Email: req.body.Email,
+      PhoneNumber: req.body.PhoneNumber,
+      Password: hash,
+    });
 
-  try {
-    const dataToSave = await data.save();
-    res.status(200).json(dataToSave);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+      const dataToSave = await data.save();
+      res.status(200).json(dataToSave);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
   }
-});
+);
 
 //Get all Method
 router.get('/getuser', async (req, res) => {
