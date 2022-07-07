@@ -3,7 +3,6 @@ import axios from 'axios';
 import { IStepperController, IuserInfo } from '../Interfaces/Interfaces';
 
 import Globalcontext from '../Context/StepperContext';
-import User_info from './signin_steps/PasswordEntry';
 
 function Stepper_controlers(props: IStepperController) {
   const USerInfo: IuserInfo = useContext(Globalcontext);

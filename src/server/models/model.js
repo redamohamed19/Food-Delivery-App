@@ -4,15 +4,15 @@ const user = new mongoose.Schema(
   {
     FirstName: {
       type: String,
-      required: true,
+      required: [true, 'please enter a FirstName'],
     },
     SecondName: {
       type: String,
-      required: true,
+      required: [true, 'please enter a SecondName'],
     },
     Email: {
       type: String,
-      required: true,
+      required: [true, 'please enter a Email'],
       unique: true,
     },
     PhoneNumber: {
@@ -27,5 +27,11 @@ const user = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+//fire a triggers after the doc saved to DB
+user.post('save', (doc, next) => {
+  console.log(doc);
+  next();
+});
 
 module.exports = mongoose.model('UserData', user);
